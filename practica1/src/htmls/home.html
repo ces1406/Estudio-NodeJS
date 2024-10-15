@@ -5,11 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="home.css">
     <title>Document</title>
+    
+    <script>
+        function ajas(e){
+            event.preventDefault()
+            event.stopImmediatePropagation()
+            let req = new XMLHttpRequest()
+
+            let nomb = document.getElementById('idNamej');
+            let apel = document.getElementById('idApellidoj');
+            let eda = document.getElementById('idEdadj');
+
+            let data = {'nombre':nomb.value ,'apell':apel.value,'edad':eda.value}
+            if(req){
+                req.open('POST','http://localhost:3000/forms-querys',true)
+                req.setRequestHeader("Content-type", "application/json");
+                req.send(JSON.stringify(data))
+            }
+            req.onload=()=>{
+                if(req.status == 201) console.log('POST OK--')
+            }
+           console.log('data:',data)
+        }
+        function sendImg(){}
+    </script>
+
 </head>
 <body>
     <h1>PAGINA INICIAL</h1>
     
     <form action="http://localhost:3000/forms-querys" method="get" autocomplete="on">
+        <h2>Formulario GET</h2>
         <label for="idName">Nombre</label>        
         <input id="idName" name="fieldName" type="text">
         <br/>
@@ -25,21 +51,36 @@
         <button type="submit"><h2>Enviar</h2></button>
     </form> 
 
-    <form action="http://localhost:3000/forms-querys" method="post" autocomplete="on">
-        <label for="idName">Nombre</label>        
-        <input id="idName" name="fieldName" type="text">
+    <form action="http://localhost:3000/forms-querys" method="post" autocomplete="on" onclick="console.log('---->FORMULARIO<---')">
+        <h2>Formulario POST</h2>
+        <label for="idNamej">Nombre</label>        
+        <input id="idNamej" name="fieldName" type="text">
         <br/>
 
-        <label for="idApellido">Apellido</label>
-        <input id="idApellido" name="fieldApel" type="text" >
+        <label for="idApellidoj">Apellido</label>
+        <input id="idApellidoj" name="fieldApel" type="text" >
         <br/>
 
-        <label for="idEdad">Edad</label>    
-        <input type="number" name="fieldEdad" id="idEdad">
+        <label for="idEdadj">Edad</label>    
+        <input type="number" name="fieldEdad" id="idEdadj">
         <br/>
 
-        <button type="submit"><h2>Enviar</h2></button>
+        <button type="submit"><h2>Enviar POST</h2></button>
+        
+        <button id="sendButt">Enviar en JSON</button>
     </form> 
-    
+    <form action="http://localhost:3000/upload" enctype="multipart/form-data" method="post">
+        <label for="idImg">Elegir archivo</label>
+        <input type="file" name="imgName" id="idImg">
+        <button id="idSendImg" type="submit">Enviar</button>
+    </form>
+
+    <script>       
+        let bot = document.getElementById("sendButt")
+        //let botI = document.getElementById("idSendImg")
+        bot.addEventListener("click",ajas,false)
+        //botI.addEventListener("click",sendImg,false)
+    </script>
+
 </body>
 </html>
